@@ -287,6 +287,7 @@ class BatchManager:
         #self.batchlimit
         SMS.write(None,'Connecting to Database')
         SMS.send()
+          
         self.ds_test, self.bbox_test = databaseConnection(testing_filepath)
         self.ds_train, self.bbox_train = databaseConnection(training_filepath)
         SMS.write(None,'Preparing Data')
