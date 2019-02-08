@@ -12,7 +12,6 @@ import numpy as np
 import scipy.ndimage as sio
 import matplotlib.pyplot as plt
 
-import SMS
 import logging
 import cv2
 import h5py
@@ -163,8 +162,6 @@ def rgb_gray(img):
         img = img.astype(np.uint8)
         gray_img = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
     except:
-        SMS.write(None,'See Image!')
-        SMS.send()
         showImg(img)
     return gray_img
 
@@ -285,13 +282,9 @@ class BatchManager:
         self.batch_q = Queue(maxsize=MAX_CAPACITY)
         self.batchsize = batch_size
         #self.batchlimit
-        SMS.write(None,'Connecting to Database')
-        SMS.send()
           
         self.ds_test, self.bbox_test = databaseConnection(testing_filepath)
         self.ds_train, self.bbox_train = databaseConnection(training_filepath)
-        SMS.write(None,'Preparing Data')
-        SMS.send()
         self.datamap_test = prepareData(self.ds_test,self.bbox_test)
         self.datamap_train = prepareData(self.ds_train,self.bbox_train)
         self.threads = []
@@ -337,8 +330,6 @@ class BatchManager:
             continue
         # Begin Training
         print('Begin Training...')
-        SMS.write(None,'Begining Training...')
-        SMS.send()
         
         
 
@@ -375,8 +366,6 @@ class BatchManager:
             print("Minibatch %i trained. Batch Class: %i" % (i,oneHot_label(input_class)))
             if i % display_step == 0 or i ==1:
                 print('Step %i: Minibatch Loss: %f' % (i,sum(l)/len(l)))
-                SMS.write( None,'Step ' +str(i) +': Minibatch Loss: '+str(sum(l)/len(l)))
-                SMS.send()
             
         for generator in self.threads:
             generator.stop()
@@ -385,17 +374,11 @@ class BatchManager:
         
         plt.savefig('training_results.png')
         print("Model saved in path: %s" % save_path)
-        SMS.write(None,"Model saved")
-        SMS.send()
         print()
         print(losses)
-        SMS.write(losses)
-        SMS.send()
         print()
         # Begin Testing
         print('Begin Testing...')
-        SMS.write(None,'Begining testing')
-        SMS.send()
         L = {i:list() for i in range(1,11)}
         for k in self.datamap_test.keys():
             class_data = self.datamap_test[k]
